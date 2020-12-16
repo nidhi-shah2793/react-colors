@@ -1,11 +1,16 @@
 import React from "react";
+import ColorBox from "./ColorBox";
+import "./Palette.css";
 
 function Palette({ paletteName, id, emoji, colors }) {
+  const colorBoxes = colors.map((color) => (
+    <ColorBox color={color.color} name={color.name} />
+  ));
+
   return (
     <div className="Palette">
-      <h1>{paletteName}</h1>
       {/* Navbar goes here */}
-      <div className="Palette__colors">{/* color boxes */}</div>
+      <div className="Palette__colors">{colorBoxes}</div>
       {/* footer */}
     </div>
   );
