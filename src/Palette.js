@@ -22,6 +22,7 @@ function Palette({ palette }) {
       color={color[colorFormat]}
       name={color.name}
       paletteId={palette.id}
+      showLink = {true}
     />
   ));
 

@@ -3,7 +3,7 @@ import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import PaletteGen from "./PaletteGen";
 import PaletteList from "./PaletteList";
-import SingleColorPalette from "./SingleColorPalette";
+import SingleColorPalette from "./SinglePaletteGen";
 
 function App() {
   return (

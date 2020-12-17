@@ -1,13 +1,37 @@
-import React from 'react'
-import {useParams} from "react-router-dom"
+import React, { useState } from "react";
+import ColorBox from "./ColorBox";
 
-function SingleColorPalette() {
-    const {paletteId, colorId} = useParams()
-    return (
-        <div>
-            <h1>Single Color Palette of {colorId}</h1>
-        </div>
-    )
+function SingleColorPalette({ palette, colorId }) {
+  const [colorFormat, setColorFormat] = useState("hex");
+
+  const gatherShades = () => {
+    let shades = [];
+    let allColors = palette.colors;
+    for (let key in allColors) {
+      shades = shades.concat(
+        allColors[key].filter((color) => color.id === colorId)
+      );
+    }
+    return shades.slice(1);
+  };
+
+  let shades = gatherShades();
+  const colorBoxes = shades.map((color) => (
+    <ColorBox
+      key={color.name}
+      colorId={color.id}
+      color={color[colorFormat]}
+      name={color.name}
+      paletteId={palette.id}
+      showLink={false}
+    />
+  ));
+
+  return (
+    <div className="Palette">
+      <div className="Palette__colors">{colorBoxes}</div>
+    </div>
+  );
 }
 
-export default SingleColorPalette
+export default SingleColorPalette;

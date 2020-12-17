@@ -1,7 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
-import ColorBox from "./ColorBox";
 
 const styles = {
   root: {
