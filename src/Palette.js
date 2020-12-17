@@ -4,7 +4,6 @@ import "./Palette.css";
 import Navbar from "./Navbar";
 
 function Palette({ palette }) {
-
   const [level, setLevel] = useState(500);
   const [colorFormat, setColorFormat] = useState("hex");
 
@@ -17,7 +16,13 @@ function Palette({ palette }) {
   };
 
   const colorBoxes = palette.colors[level].map((color) => (
-    <ColorBox key={color.id} color={color[colorFormat]} name={color.name} />
+    <ColorBox
+      key={color.id}
+      colorId={color.id}
+      color={color[colorFormat]}
+      name={color.name}
+      paletteId={palette.id}
+    />
   ));
 
   return (

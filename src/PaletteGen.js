@@ -5,10 +5,10 @@ import { seedColors } from "./seedColors";
 import Palette from "./Palette";
 
 function PaletteGen() {
-  const { id } = useParams();
+  const { paletteId } = useParams();
 
   const foundPalette = seedColors.find(function (palette) {
-    return palette.id === id;
+    return palette.id === paletteId;
   });
 
   return <Palette palette={generatePalette(foundPalette)} />;
