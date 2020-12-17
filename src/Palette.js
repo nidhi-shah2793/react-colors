@@ -4,6 +4,7 @@ import "./Palette.css";
 import Navbar from "./Navbar";
 
 function Palette({ palette }) {
+
   const [level, setLevel] = useState(500);
   const [colorFormat, setColorFormat] = useState("hex");
 
@@ -27,7 +28,10 @@ function Palette({ palette }) {
         handleFormatChange={handleFormatChange}
       />
       <div className="Palette__colors">{colorBoxes}</div>
-      {/* footer */}
+      <div className="Palette__footer">
+        {palette.paletteName}
+        <span className="Palette__footerEmoji">{palette.emoji}</span>
+      </div>
     </div>
   );
 }

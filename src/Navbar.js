@@ -69,7 +69,6 @@ function Navbar({ changeLevel, level, handleFormatChange }) {
           }}
           open={open}
           autoHideDuration={3000}
-          onClose={handleClose}
           message={<span id="message__id">Format changed</span>}
           ContentProps={{
             "aria-describedby": "message__id",
