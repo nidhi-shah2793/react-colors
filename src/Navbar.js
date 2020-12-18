@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import "rc-slider/assets/index.css";
 import "./Navbar.css";
 
-function Navbar({ changeLevel, level, handleFormatChange }) {
+function Navbar({ changeLevel, level, handleFormatChange, showSlider }) {
   const [colorFormat, setColorFormat] = useState("hex");
   const [open, setOpen] = useState(false);
 
@@ -32,18 +32,21 @@ function Navbar({ changeLevel, level, handleFormatChange }) {
       <div className="Navbar__logo">
         <Link to="/">ReactColorPicker</Link>
       </div>
-      <div className="Navbar__sliderContainer">
-        <span>Level: {level}</span>
-        <div className="Navbar__slider">
-          <Slider
-            defaultValue={level}
-            step={100}
-            min={100}
-            max={900}
-            onChange={changeLevel}
-          />
+      {showSlider ? (
+        <div className="Navbar__sliderContainer">
+          <span>Level: {level}</span>
+          <div className="Navbar__slider">
+            <Slider
+              defaultValue={level}
+              step={100}
+              min={100}
+              max={900}
+              onChange={changeLevel}
+            />
+          </div>
         </div>
-      </div>
+      ) : undefined}
+
       <div className="Navbar__info">
         Answer to all "Tell me what color this is?" questions
       </div>

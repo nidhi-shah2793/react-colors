@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ColorBox from "./ColorBox";
 import "./Palette.css";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 function Palette({ palette }) {
   const [level, setLevel] = useState(500);
@@ -22,22 +23,20 @@ function Palette({ palette }) {
       color={color[colorFormat]}
       name={color.name}
       paletteId={palette.id}
-      showLink = {true}
+      showLink={true}
     />
   ));
 
   return (
     <div className="Palette">
       <Navbar
+        showSlider={true}
         changeLevel={changeLevel}
         level={level}
         handleFormatChange={handleFormatChange}
       />
       <div className="Palette__colors">{colorBoxes}</div>
-      <div className="Palette__footer">
-        {palette.paletteName}
-        <span className="Palette__footerEmoji">{palette.emoji}</span>
-      </div>
+      <Footer palette={palette} />
     </div>
   );
 }

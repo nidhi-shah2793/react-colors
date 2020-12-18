@@ -1,0 +1,14 @@
+.Footer {
+  background-color: white;
+  height: 5vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.Footer__emoji {
+  font-size: 1.2rem;
+  margin: 0 1rem;
+}
