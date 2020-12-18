@@ -8,9 +8,7 @@ function ColorBox({ name, color, paletteId, colorId, showLink }) {
   const [copied, setCopied] = useState(false);
 
   const isTooDark = chroma(color).luminance() <= 0.5;
-
   let adjustedColor = isTooDark ? "white" : "black";
-  console.log(adjustedColor);
 
   const changeCopyState = () => {
     setCopied(true);
@@ -33,7 +31,7 @@ function ColorBox({ name, color, paletteId, colorId, showLink }) {
           <h1>COPIED!</h1>
           <p>{color}</p>
         </div>
-        <div className="ColorBox__copyContainer">
+        <div>
           <div className="ColorBox__colorName">
             <span style={{ color: adjustedColor }}>{name}</span>
           </div>

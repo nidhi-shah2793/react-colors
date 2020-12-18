@@ -38,7 +38,8 @@
 
 .rc-slider-handle,
 .rc-slider-handle:active,
-.rc-slider-handle:hover {
+.rc-slider-handle:hover,
+.rc-slider-handle:focus {
   background-color: green;
   outline: 0;
   border: 2px solid green;

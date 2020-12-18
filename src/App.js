@@ -4,11 +4,15 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import PaletteGen from "./PaletteGen";
 import PaletteList from "./PaletteList";
 import SingleColorPalette from "./SinglePaletteGen";
+import NewPaletteForm from "./NewPaletteForm";
 
 function App() {
   return (
     <div className="App">
       <Switch>
+        <Route exact path="/palettes/new">
+          <NewPaletteForm />
+        </Route>
         <Route exact path="/palettes/:paletteId/:colorId">
           <SingleColorPalette />
         </Route>
