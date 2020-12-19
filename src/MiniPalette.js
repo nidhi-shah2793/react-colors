@@ -13,6 +13,8 @@ const styles = {
     "&:hover": {
       cursor: "pointer",
     },
+    marginBottom: "5%",
+    width: "30%",
   },
   colors: {
     backgroundColor: "white",
@@ -33,7 +35,7 @@ const styles = {
   },
   emoji: {
     marginLeft: "0.5rem",
-    fontSize: "1.5rem",
+    fontSize: "1rem",
   },
   miniColor: {
     height: "25%",

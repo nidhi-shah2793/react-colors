@@ -1,13 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { generatePalette } from "./colorHelpers";
-import { seedColors } from "./seedColors";
 import Palette from "./Palette";
 
-function PaletteGen() {
+function PaletteGen({ palettes }) {
   const { paletteId } = useParams();
 
-  const foundPalette = seedColors.find(function (palette) {
+  const foundPalette = palettes.find(function (palette) {
     return palette.id === paletteId;
   });
 

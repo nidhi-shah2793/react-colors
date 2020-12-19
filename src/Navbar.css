@@ -13,7 +13,7 @@
   height: 100%;
   display: flex;
   align-items: center;
-  border-right: 2px solid rgb(218, 65, 129);
+  border-right: 2px solid #da4181;
 }
 
 .Navbar__logo a {

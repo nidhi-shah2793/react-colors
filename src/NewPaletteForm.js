@@ -1,30 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import Button from "@material-ui/core/Button";
-// import {
-//   createMuiTheme,
-//   withStyles,
-//   ThemeProvider,
-// } from "@material-ui/core/styles";
-// import { grey } from "@material-ui/core/colors";
-
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { useHistory } from "react-router-dom";
 import { ChromePicker } from "react-color";
+import CreateColorBox from "./CreateColorBox";
 
 const drawerWidth = 400;
 
@@ -36,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
+    marginTop: "0",
+    height: "8vh",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -72,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    height: "90vh",
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
@@ -88,24 +81,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const ColorButton = withStyles((theme) => ({
-//   root: {
-//     color: theme.palette.getContrastText(grey[500]),
-//     backgroundColor: grey[500],
-//     "&:hover": {
-//       backgroundColor: grey[700],
-//     },
-//   },
-// }))(Button);
-
-function NewPaletteForm() {
+function NewPaletteForm({ savePalette, palettes }) {
+  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [background, setBackground] = React.useState("#fff");
+  const [open, setOpen] = useState(true);
+  const [colors, setColors] = useState([
+    { name: "Colt Purple", color: "purple" },
+    { name: "Lemongrass Green", color: "#C6D747" },
+  ]);
+
+  const [background, setBackground] = useState("#377ED1");
+  const [colorName, setColorName] = useState("");
+  const [paletteName, setPaletteName] = useState("");
 
   const handleChangeComplete = (color) => {
     setBackground(color.hex);
+  };
+
+  const handleColorNameChange = (event) => {
+    setColorName(event.target.value);
+  };
+
+  const handlePaletteNameChange = (event) => {
+    setPaletteName(event.target.value);
   };
 
   const handleDrawerOpen = () => {
@@ -116,11 +115,46 @@ function NewPaletteForm() {
     setOpen(false);
   };
 
+  const addNewColor = () => {
+    const newColor = {
+      name: colorName === "" ? background : colorName,
+      color: background,
+    };
+    setColors([...colors, newColor]);
+    setColorName("");
+  };
+
+  const handleSavePalette = () => {
+    const newPalette = {
+      paletteName: paletteName,
+      id: paletteName.toLowerCase().replace(/ /g, "-"),
+      // emoji: ,
+      colors: colors,
+    };
+    savePalette(newPalette);
+    history.push("/");
+  };
+
+  ValidatorForm.addValidationRule("isColorNameUnique", (value) =>
+    colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase())
+  );
+
+  ValidatorForm.addValidationRule("isColorUnique", (value) =>
+    colors.every(({ color }) => color !== background)
+  );
+
+  ValidatorForm.addValidationRule("isPaletteNameUnique", (value) =>
+    palettes.every(
+      ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
+    )
+  );
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
+        color="default"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -138,6 +172,21 @@ function NewPaletteForm() {
           <Typography variant="h6" noWrap>
             Persistent drawer
           </Typography>
+          <ValidatorForm
+            onSubmit={handleSavePalette}
+            onError={(errors) => console.log(errors)}
+          >
+            <TextValidator
+              onChange={handlePaletteNameChange}
+              value={paletteName}
+              label="Palette Name"
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={["Enter Palette Name!", "Name already used!"]}
+            />
+            <Button type="submit" variant="contained" color="primary">
+              Save Palette
+            </Button>
+          </ValidatorForm>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -157,27 +206,44 @@ function NewPaletteForm() {
         <Divider />
         <Typography variant="h4">Design Your Palette</Typography>
         <div>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ backgroundColor: "#e9edf0", color: "#da4181" }}
+          >
             Random Color
           </Button>
           <Button variant="contained" color="secondary">
             Clear Palette
           </Button>
-          {/* <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-          >
-            Custom CSS
-          </ColorButton> */}
         </div>
         <ChromePicker
           color={background}
           onChangeComplete={handleChangeComplete}
         />
-        <Button variant="contained" color="primary">
-          ADD COLOR
-        </Button>
+        <ValidatorForm
+          onSubmit={addNewColor}
+          onError={(errors) => console.log(errors)}
+        >
+          <TextValidator
+            onChange={handleColorNameChange}
+            value={colorName}
+            validators={["isColorNameUnique", "isColorUnique"]}
+            errorMessages={["Color name already used!", "Color already used!"]}
+          />
+          <p>
+            Get creative with your color names. Don't worry! If you don't add
+            one, we will assume you were busy and display the HEX code instead
+          </p>
+          <Button
+            variant="contained"
+            type="submit"
+            color="primary"
+            style={{ backgroundColor: background }}
+          >
+            ADD COLOR
+          </Button>
+        </ValidatorForm>
 
         {/* <List>
             {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
@@ -198,9 +264,10 @@ function NewPaletteForm() {
         })}
       >
         <div className={classes.drawerHeader} />
-        {/* <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          </Typography> */}
+
+        {colors.map((color) => (
+          <CreateColorBox key={color.color} {...color} />
+        ))}
       </main>
     </div>
   );

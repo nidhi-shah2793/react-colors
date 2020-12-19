@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import PaletteGen from "./PaletteGen";
 import PaletteList from "./PaletteList";
-import SingleColorPalette from "./SinglePaletteGen";
+import SinglePaletteGen from "./SinglePaletteGen";
 import NewPaletteForm from "./NewPaletteForm";
+import { seedColors } from "./seedColors";
 
 function App() {
+  const [palettes, setPalettes] = useState(seedColors);
+
+  const savePalette = (newPalette) => {
+    setPalettes([...palettes, newPalette]);
+  };
+
   return (
     <div className="App">
       <Switch>
         <Route exact path="/palettes/new">
-          <NewPaletteForm />
+          <NewPaletteForm savePalette={savePalette} palettes={palettes} />
         </Route>
         <Route exact path="/palettes/:paletteId/:colorId">
-          <SingleColorPalette />
+          <SinglePaletteGen palettes={palettes} />
         </Route>
         <Route exact path="/palettes/:paletteId">
-          <PaletteGen />
+          <PaletteGen palettes={palettes} />
         </Route>
         <Route exact path="/">
-          <PaletteList />
+          <PaletteList palettes={palettes} />
         </Route>
         <Redirect to="/" />
       </Switch>

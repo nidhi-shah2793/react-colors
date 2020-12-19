@@ -1,5 +1,4 @@
 import React from "react";
-import { seedColors } from "./seedColors";
 import MiniPalette from "./MiniPalette";
 import { withStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
@@ -7,13 +6,17 @@ import { Link } from "react-router-dom";
 const styles = {
   root: {
     backgroundColor: "blue",
-    height: "100%",
+    minHeight: "100vh",
+    height: "auto",
+    width: "100%",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
+    paddingBottom: "2rem",
   },
   container: {
     width: "50%",
+    minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
     flexWrap: "wrap",
@@ -31,16 +34,22 @@ const styles = {
     },
   },
   palettes: {
+    height: "auto",
     boxSizing: "border-box",
     width: "100%",
-    display: "grid",
-    gridTemplateColumns: "repeat(3,30%)",
-    gridGap: "5%",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    // display: "grid",
+    // gridTemplateColumns: "repeat(3,30%)",
+    // gridGap: "5%",
+    // paddingBottom: "10rem",
   },
 };
 
-function PaletteList({ classes }) {
-  const msg = seedColors.map((palette) => (
+function PaletteList({ classes, palettes }) {
+  const msg = palettes.map((palette) => (
     <MiniPalette key={palette.id} {...palette} />
   ));
   return (
