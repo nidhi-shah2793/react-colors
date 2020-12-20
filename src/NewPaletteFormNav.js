@@ -15,6 +15,9 @@ import { Link } from "react-router-dom";
 const drawerWidth = 400;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
   appBar: {
     marginTop: "0",
     height: "8vh",
@@ -22,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -37,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: "none",
   },
+  navBtns: {},
 }));
 
 function NewPaletteFormNav({
@@ -74,7 +80,7 @@ function NewPaletteFormNav({
   );
 
   return (
-    <div>
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -94,8 +100,10 @@ function NewPaletteFormNav({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Create a Palette
           </Typography>
+        </Toolbar>
+        <div className={classes.navBtns}>
           <ValidatorForm
             onSubmit={handleSavePalette}
             onError={(errors) => console.log(errors)}
@@ -110,13 +118,13 @@ function NewPaletteFormNav({
             <Button type="submit" variant="contained" color="primary">
               Save Palette
             </Button>
-            <Link to="/">
-              <Button variant="contained" color="secondary">
-                Go Back
-              </Button>
-            </Link>
           </ValidatorForm>
-        </Toolbar>
+          <Link to="/">
+            <Button variant="contained" color="secondary">
+              Go Back
+            </Button>
+          </Link>
+        </div>
       </AppBar>
     </div>
   );

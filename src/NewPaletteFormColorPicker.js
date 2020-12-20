@@ -2,8 +2,31 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { ChromePicker } from "react-color";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: "100%",
+  },
+  picker: {
+    width: "100% !important",
+    marginTop: "2rem",
+  },
+  addColorBtn: {
+    width: "100%",
+    padding: "1rem",
+    marginTop: "1rem",
+    fontSize: "2rem",
+  },
+  colorNameInput: {
+    width: "100%",
+    height: "70px",
+  },
+}));
 
 function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
+  const classes = useStyles();
+  const theme = useTheme();
   const [background, setBackground] = useState("#377ED1");
   const [colorName, setColorName] = useState("");
 
@@ -33,18 +56,23 @@ function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
   };
 
   return (
-    <div>
+    <div className={classes.container}>
       <ChromePicker
         color={background}
         onChangeComplete={handleChangeComplete}
+        className={classes.picker}
       />
       <ValidatorForm
         onSubmit={handleSubmit}
         onError={(errors) => console.log(errors)}
       >
         <TextValidator
+          variant="filled"
+          placeholder="Color Name"
+          className={classes.colorNameInput}
           onChange={handleColorNameChange}
           value={colorName}
+          margin="normal"
           validators={["required", "isColorNameUnique", "isColorUnique"]}
           errorMessages={[
             "Entering a badass color name is necessary!",
@@ -52,10 +80,6 @@ function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
             "Color already used!",
           ]}
         />
-        {/* <p>
-            Get creative with your color names. Don't worry! If you don't add
-            one, we will assume you were busy and display the HEX code instead
-          </p> */}
         <Button
           variant="contained"
           type="submit"
@@ -66,6 +90,7 @@ function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
               : { backgroundColor: background }
           }
           disabled={colors.length >= maxColors}
+          className={classes.addColorBtn}
         >
           {colors.length >= maxColors ? "PALETTE FULL" : "ADD COLOR"}
         </Button>
