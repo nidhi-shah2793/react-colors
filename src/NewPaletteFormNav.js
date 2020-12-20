@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,9 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import PaletteNameDialog from "./PaletteNameDialog";
 
 const drawerWidth = 400;
 
@@ -52,32 +51,8 @@ function NewPaletteFormNav({
   open,
   handleDrawerOpen,
 }) {
-  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
-
-  const [paletteName, setPaletteName] = useState("");
-
-  const handlePaletteNameChange = (event) => {
-    setPaletteName(event.target.value);
-  };
-
-  const handleSavePalette = () => {
-    const newPalette = {
-      paletteName: paletteName,
-      id: paletteName.toLowerCase().replace(/ /g, "-"),
-      // emoji: ,
-      colors: colors,
-    };
-    savePalette(newPalette);
-    history.push("/");
-  };
-
-  ValidatorForm.addValidationRule("isPaletteNameUnique", (value) =>
-    palettes.every(
-      ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-    )
-  );
 
   return (
     <div className={classes.root}>
@@ -104,21 +79,11 @@ function NewPaletteFormNav({
           </Typography>
         </Toolbar>
         <div className={classes.navBtns}>
-          <ValidatorForm
-            onSubmit={handleSavePalette}
-            onError={(errors) => console.log(errors)}
-          >
-            <TextValidator
-              onChange={handlePaletteNameChange}
-              value={paletteName}
-              label="Palette Name"
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter Palette Name!", "Name already used!"]}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Save Palette
-            </Button>
-          </ValidatorForm>
+          <PaletteNameDialog
+            palettes={palettes}
+            savePalette={savePalette}
+            colors={colors}
+          />
           <Link to="/">
             <Button variant="contained" color="secondary">
               Go Back
