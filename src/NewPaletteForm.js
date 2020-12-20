@@ -2,22 +2,18 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Button from "@material-ui/core/Button";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { useHistory } from "react-router-dom";
-import { ChromePicker } from "react-color";
 import DraggableColorList from "./DraggableColorList";
-import  arrayMove from "array-move";
+import arrayMove from "array-move";
+import NewPaletteFormNav from "./NewPaletteFormNav";
+import NewPaletteFormColorPicker from "./NewPaletteFormColorPicker";
 
 const drawerWidth = 400;
+const maxColors = 20;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,28 +21,6 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
     },
-  },
-  appBar: {
-    marginTop: "0",
-    height: "8vh",
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
   },
   drawer: {
     width: drawerWidth,
@@ -83,46 +57,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewPaletteForm({ savePalette, palettes }) {
-  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const [colors, setColors] = useState([
-    { name: "Colt Purple", color: "purple" },
-    { name: "Lemongrass Green", color: "#C6D747" },
-  ]);
+  const [colors, setColors] = useState(palettes[0].colors);
 
-  const [background, setBackground] = useState("#377ED1");
-  const [colorName, setColorName] = useState("");
-  const [paletteName, setPaletteName] = useState("");
-
-  const handleChangeComplete = (color) => {
-    setBackground(color.hex);
-  };
-
-  const handleColorNameChange = (event) => {
-    setColorName(event.target.value);
-  };
-
-  const handlePaletteNameChange = (event) => {
-    setPaletteName(event.target.value);
+  const clearPalette = () => {
+    setColors([]);
   };
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
+  const addRandomColor = () => {
+    const allColors = palettes.map((palette) => palette.colors).flat();
+    let randomColorIndex = Math.floor(Math.random() * allColors.length);
+    let randomColor = allColors[randomColorIndex];
+    let condition1 = colors.every(({ color }) => color !== randomColor.color);
+    let condition2 = colors.every(
+      ({ name }) => name.toLowerCase() !== randomColor.name.toLowerCase()
+    );
+    if (condition1 && condition2 && colors.length < maxColors)
+      setColors([...colors, randomColor]);
+  };
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  const addNewColor = () => {
-    const newColor = {
-      name: colorName === "" ? background : colorName,
-      color: background,
-    };
+  const addNewColor = (newColor) => {
     setColors([...colors, newColor]);
-    setColorName("");
   };
 
   const deleteColor = (colorName) => {
@@ -130,75 +95,19 @@ function NewPaletteForm({ savePalette, palettes }) {
     setColors(filtered);
   };
 
-  const handleSavePalette = () => {
-    const newPalette = {
-      paletteName: paletteName,
-      id: paletteName.toLowerCase().replace(/ /g, "-"),
-      // emoji: ,
-      colors: colors,
-    };
-    savePalette(newPalette);
-    history.push("/");
-  };
-
-  ValidatorForm.addValidationRule("isColorNameUnique", (value) =>
-    colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase())
-  );
-
-  ValidatorForm.addValidationRule("isColorUnique", (value) =>
-    colors.every(({ color }) => color !== background)
-  );
-
-  ValidatorForm.addValidationRule("isPaletteNameUnique", (value) =>
-    palettes.every(
-      ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-    )
-  );
-
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setColors(arrayMove(colors, oldIndex, newIndex));
   };
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        color="default"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Persistent drawer
-          </Typography>
-          <ValidatorForm
-            onSubmit={handleSavePalette}
-            onError={(errors) => console.log(errors)}
-          >
-            <TextValidator
-              onChange={handlePaletteNameChange}
-              value={paletteName}
-              label="Palette Name"
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter Palette Name!", "Name already used!"]}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Save Palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <NewPaletteFormNav
+        colors={colors}
+        palettes={palettes}
+        savePalette={savePalette}
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+      />
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -219,58 +128,21 @@ function NewPaletteForm({ savePalette, palettes }) {
           <Button
             variant="contained"
             color="primary"
+            onClick={addRandomColor}
             style={{ backgroundColor: "#e9edf0", color: "#da4181" }}
+            disabled={colors.length >= maxColors}
           >
             Random Color
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" onClick={clearPalette}>
             Clear Palette
           </Button>
         </div>
-        <ChromePicker
-          color={background}
-          onChangeComplete={handleChangeComplete}
+        <NewPaletteFormColorPicker
+          colors={colors}
+          addNewColor={addNewColor}
+          maxColors={maxColors}
         />
-        <ValidatorForm
-          onSubmit={addNewColor}
-          onError={(errors) => console.log(errors)}
-        >
-          <TextValidator
-            onChange={handleColorNameChange}
-            value={colorName}
-            validators={["required", "isColorNameUnique", "isColorUnique"]}
-            errorMessages={[
-              "Entering a badass color name is necessary!",
-              "Color name already used!",
-              "Color already used!",
-            ]}
-          />
-          {/* <p>
-            Get creative with your color names. Don't worry! If you don't add
-            one, we will assume you were busy and display the HEX code instead
-          </p> */}
-          <Button
-            variant="contained"
-            type="submit"
-            color="primary"
-            style={{ backgroundColor: background }}
-          >
-            ADD COLOR
-          </Button>
-        </ValidatorForm>
-
-        {/* <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          */}
       </Drawer>
       <main
         className={clsx(classes.content, {
