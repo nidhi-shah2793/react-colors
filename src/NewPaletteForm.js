@@ -14,7 +14,8 @@ import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { useHistory } from "react-router-dom";
 import { ChromePicker } from "react-color";
-import CreateColorBox from "./CreateColorBox";
+import DraggableColorList from "./DraggableColorList";
+import  arrayMove from "array-move";
 
 const drawerWidth = 400;
 
@@ -124,6 +125,11 @@ function NewPaletteForm({ savePalette, palettes }) {
     setColorName("");
   };
 
+  const deleteColor = (colorName) => {
+    const filtered = colors.filter((color) => color.name !== colorName);
+    setColors(filtered);
+  };
+
   const handleSavePalette = () => {
     const newPalette = {
       paletteName: paletteName,
@@ -148,6 +154,10 @@ function NewPaletteForm({ savePalette, palettes }) {
       ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
     )
   );
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setColors(arrayMove(colors, oldIndex, newIndex));
+  };
 
   return (
     <div className={classes.root}>
@@ -228,13 +238,17 @@ function NewPaletteForm({ savePalette, palettes }) {
           <TextValidator
             onChange={handleColorNameChange}
             value={colorName}
-            validators={["isColorNameUnique", "isColorUnique"]}
-            errorMessages={["Color name already used!", "Color already used!"]}
+            validators={["required", "isColorNameUnique", "isColorUnique"]}
+            errorMessages={[
+              "Entering a badass color name is necessary!",
+              "Color name already used!",
+              "Color already used!",
+            ]}
           />
-          <p>
+          {/* <p>
             Get creative with your color names. Don't worry! If you don't add
             one, we will assume you were busy and display the HEX code instead
-          </p>
+          </p> */}
           <Button
             variant="contained"
             type="submit"
@@ -264,10 +278,13 @@ function NewPaletteForm({ savePalette, palettes }) {
         })}
       >
         <div className={classes.drawerHeader} />
-
-        {colors.map((color) => (
-          <CreateColorBox key={color.color} {...color} />
-        ))}
+        <DraggableColorList
+          axis="xy"
+          colors={colors}
+          deleteColor={deleteColor}
+          onSortEnd={onSortEnd}
+          distance={1}
+        />
       </main>
     </div>
   );

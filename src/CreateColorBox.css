@@ -6,10 +6,10 @@
   display: inline-block;
   position: relative;
   cursor: pointer;
-  /* margin-bottom: -3.5px; */
+  margin-bottom: -3.5px;
 }
 
-.ColorBox__colorName {
+.CreateColorBox__colorName {
   position: absolute;
   padding: 10px;
   left: 0px;
@@ -17,4 +17,23 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   font-size: 12px;
+}
+
+.CreateColorBox__delete {
+  margin: 0;
+  padding: 10px;
+  position: absolute;
+  border: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-size: 2px;
+  color: rgba(0, 0, 0, 0.5);
+  transition: color 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+
+.CreateColorBox:hover .CreateColorBox__delete {
+  color: white;
+  transform: scale(1.3);
 }
