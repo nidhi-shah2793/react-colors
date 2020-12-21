@@ -48,9 +48,9 @@ const styles = {
   },
 };
 
-function PaletteList({ classes, palettes }) {
+function PaletteList({ classes, palettes, deletePalette }) {
   const msg = palettes.map((palette) => (
-    <MiniPalette key={palette.id} {...palette} />
+    <MiniPalette key={palette.id} {...palette} deletePalette={deletePalette} />
   ));
   return (
     <div className={classes.root}>

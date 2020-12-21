@@ -1,12 +1,13 @@
 .CreateColorBox {
   width: 20%;
   height: 25%;
+  margin-top: 0;
   margin-left: 0;
   margin-right: 0;
   display: inline-block;
   position: relative;
   cursor: pointer;
-  margin-bottom: -3.5px;
+  margin-bottom: -5px;
 }
 
 .CreateColorBox__colorName {

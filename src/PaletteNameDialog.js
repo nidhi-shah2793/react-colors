@@ -6,31 +6,37 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
-function PaletteNameDialog({ savePalette, colors, palettes }) {
-  const [open, setOpen] = useState(false);
+function PaletteNameDialog({
+  savePalette,
+  colors,
+  palettes,
+  formStage,
+  handleClose,
+  handleStageChange,
+}) {
   const [paletteName, setPaletteName] = useState("");
+  const [emoji, setEmoji] = useState({});
 
   const handlePaletteNameChange = (event) => {
     setPaletteName(event.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleSavePalette = () => {
     const newPalette = {
       paletteName: paletteName,
       id: paletteName.toLowerCase().replace(/ /g, "-"),
-      // emoji: ,
+      emoji: emoji,
       colors: colors,
     };
+    handleClose();
     savePalette(newPalette);
+  };
+
+  const addEmoji = (newEmoji) => {
+    setEmoji(newEmoji.native);
   };
 
   ValidatorForm.addValidationRule("isPaletteNameUnique", (value) =>
@@ -41,52 +47,71 @@ function PaletteNameDialog({ savePalette, colors, palettes }) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
       <Dialog
-        open={open}
+        open={formStage === "emoji"}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby="Select an emoji"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          Choose an Emoji you love ❤
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <ValidatorForm
-            onSubmit={handleSavePalette}
-            onError={(errors) => console.log(errors)}
-          >
-            <TextValidator
-              onChange={handlePaletteNameChange}
-              value={paletteName}
-              label="Palette Name"
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter Palette Name!", "Name already used!"]}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Save Palette
-            </Button>
-          </ValidatorForm>
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          /> */}
+          <Picker
+            set="facebook"
+            onSelect={addEmoji}
+            title="Pick your emoji…"
+            emoji="point_up"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSavePalette}
+          >
+            Save Palette
           </Button>
         </DialogActions>
+      </Dialog>
+
+      {/* palette name dialog */}
+      <Dialog
+        open={formStage === "paletteName"}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Choose a Palette Name</DialogTitle>
+        <ValidatorForm
+          onSubmit={handleStageChange}
+          onError={(errors) => console.log(errors)}
+        >
+          <DialogContent>
+            <DialogContentText>
+              Please enter a name for your new beautiful palette. Make sure it's
+              unique!
+            </DialogContentText>
+
+            <TextValidator
+              fullWidth
+              margin="normal"
+              onChange={handlePaletteNameChange}
+              value={paletteName}
+              validators={["required", "isPaletteNameUnique"]}
+              errorMessages={["Enter Palette Name!", "Name already used!"]}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Pick an Emoji next
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
       </Dialog>
     </div>
   );

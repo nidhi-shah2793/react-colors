@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,8 +10,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import PaletteNameDialog from "./PaletteNameDialog";
-
-const drawerWidth = 400;
+import { DRAWER_WIDTH as drawerWidth } from "./constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -41,7 +41,15 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: "none",
   },
-  navBtns: {},
+  navBtns: {
+    marginRight: "1rem",
+    "& a": {
+      textDecoration: "0",
+    },
+  },
+  btn: {
+    margin: "0 0.5rem",
+  },
 }));
 
 function NewPaletteFormNav({
@@ -53,6 +61,21 @@ function NewPaletteFormNav({
 }) {
   const classes = useStyles();
   const theme = useTheme();
+
+  const [formStage, setFormStage] = useState("");
+
+  const handleClickOpen = () => {
+    setFormStage("paletteName");
+  };
+
+  const handleClose = () => {
+    setFormStage("");
+  };
+
+  const handleStageChange = () => {
+    setFormStage("emoji");
+  };
+
 
   return (
     <div className={classes.root}>
@@ -79,18 +102,35 @@ function NewPaletteFormNav({
           </Typography>
         </Toolbar>
         <div className={classes.navBtns}>
-          <PaletteNameDialog
-            palettes={palettes}
-            savePalette={savePalette}
-            colors={colors}
-          />
           <Link to="/">
-            <Button variant="contained" color="secondary">
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="secondary"
+            >
               Go Back
             </Button>
           </Link>
+          <Button
+            className={classes.btn}
+            variant="contained"
+            color="primary"
+            onClick={handleClickOpen}
+          >
+            Save
+          </Button>
         </div>
       </AppBar>
+      {formStage ? (
+        <PaletteNameDialog
+          palettes={palettes}
+          savePalette={savePalette}
+          colors={colors}
+          handleClose={handleClose}
+          formStage={formStage}
+          handleStageChange={handleStageChange}
+        />
+      ) : undefined}
     </div>
   );
 }

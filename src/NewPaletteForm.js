@@ -11,20 +11,21 @@ import DraggableColorList from "./DraggableColorList";
 import arrayMove from "array-move";
 import NewPaletteFormNav from "./NewPaletteFormNav";
 import NewPaletteFormColorPicker from "./NewPaletteFormColorPicker";
+import { DRAWER_WIDTH as drawerWidth } from "./constants";
 
-const drawerWidth = 400;
 const maxColors = 20;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     "& > *": {
-      margin: theme.spacing(1),
+      // margin: theme.spacing(1),
     },
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    height: "8vh",
   },
   drawerPaper: {
     width: drawerWidth,
@@ -34,15 +35,18 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: "flex",
     alignItems: "center",
-    padding: theme.spacing(0, 1),
+    width: "100%",
+    // padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
+    minHeight: "8vh !important",
   },
+  // theme.spacing(3)
   content: {
     flexGrow: 1,
-    height: "90vh",
-    padding: theme.spacing(3),
+    height: "92vh !important",
+    padding: "0",
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

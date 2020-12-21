@@ -1,6 +1,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const styles = {
   root: {
@@ -10,8 +11,9 @@ const styles = {
     padding: "0.5rem",
     position: "relative",
     overflow: "hidden",
-    "&:hover": {
-      cursor: "pointer",
+    cursor: "pointer",
+    "&:hover svg": {
+      opacity: 1,
     },
     marginBottom: "5%",
     width: "30%",
@@ -46,13 +48,39 @@ const styles = {
     position: "relative",
     marginBottom: "-4.5px",
   },
+  deleteIcon: {
+    color: "white",
+    backgroundColor: "#eb3d30",
+    borderRadius: "2px",
+    width: "20px",
+    height: "20px",
+    position: "absolute",
+    right: "0",
+    top: "0",
+    padding: "10px",
+    zIndex: "1",
+    opacity: 0,
+    transition: "opacity 0.3s ease-in-out",
+  },
 };
 
-function MiniPalette({ colors, emoji, id, paletteName, classes }) {
+function MiniPalette({
+  colors,
+  emoji,
+  id,
+  paletteName,
+  classes,
+  deletePalette,
+}) {
   const history = useHistory();
 
   const goToPalette = () => {
     history.push(`/palettes/${id}`);
+  };
+
+  const handleDelete = (event) => {
+    event.stopPropagation()
+    deletePalette(paletteName);
   };
 
   const miniColorBoxes = colors.map((color) => (
@@ -65,6 +93,7 @@ function MiniPalette({ colors, emoji, id, paletteName, classes }) {
 
   return (
     <div className={classes.root} onClick={goToPalette}>
+      <DeleteIcon className={classes.deleteIcon} onClick={handleDelete} />
       <div className={classes.colors}>{miniColorBoxes}</div>
       <h5 className={classes.title}>
         {paletteName}
