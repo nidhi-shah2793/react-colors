@@ -2,3 +2,10 @@
   min-height: 100vh;
   overflow: hidden;
 }
+
+@media (max-width: 800px) {
+  .App {
+    height: auto;
+    /* overflow-y: scroll; */
+  }
+}

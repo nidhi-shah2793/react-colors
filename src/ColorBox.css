@@ -102,7 +102,7 @@
 
 .ColorBox__overlay.show {
   opacity: 1;
-  transform: scale(10);
+  transform: scale(50);
   z-index: 10;
   position: absolute;
 }
@@ -143,4 +143,40 @@
 .ColorBox__overlayMessage p {
   font-size: 2rem;
   font-weight: 100;
+}
+
+/* until xs sizes */
+@media (max-width: 575.98px) {
+  .ColorBox {
+    width: 100%;
+    height: 5%;
+  }
+  .SingleColorPalette .ColorBox {
+    width: 100%;
+    height: 10%;
+  }
+}
+
+/* from sm to md */
+@media (min-width: 575.98px) and (max-width: 991.98px) {
+  .ColorBox {
+    width: 50%;
+    height: 10%;
+  }
+  .SingleColorPalette .ColorBox {
+    width: 50%;
+    height: 20%;
+  }
+}
+
+/* from md to lg */
+@media (min-width: 991.98px) and (max-width: 1199.98px) {
+  .ColorBox {
+    width: 25%;
+    height: 20%;
+  }
+  .SingleColorPalette .ColorBox {
+    width: 25%;
+    height: 33%;
+  }
 }
