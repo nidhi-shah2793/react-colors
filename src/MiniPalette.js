@@ -17,6 +17,21 @@ const styles = {
     },
     marginBottom: "5%",
     width: "30%",
+    height: "200px",
+    // until sm
+    "@media (max-width: 767.98px)": {
+      width: "100%",
+      marginBottom: "15%",
+    },
+    // between sm and md
+    "@media (min-width:767.98px) and (max-width: 991.98px)": {
+      width: "40%",
+      marginBottom: "10%",
+    },
+    // between md and lg
+    "@media (min-width:991.98px) and (max-width: 1199.98px)": {
+      width: "30%",
+    },
   },
   colors: {
     backgroundColor: "white",
@@ -29,7 +44,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "0 auto",
+    margin: "0 1rem",
     color: "black",
     paddingTop: "0.5rem",
     fontSize: "1rem",
@@ -79,7 +94,7 @@ function MiniPalette({
   };
 
   const handleDelete = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     deletePalette(paletteName);
   };
 
