@@ -47,16 +47,13 @@ function Navbar({ changeLevel, level, handleFormatChange, showSlider }) {
         </div>
       ) : undefined}
 
-      <div className="Navbar__info">
-        Answer to all "Tell me what color this is?" questions
-      </div>
       <div className="Navbar__selectContainer">
         <Select
           labelId="demo-simple-select-helper-label"
           id="demo-simple-select-helper"
           value={colorFormat}
           onChange={handleChange}
-          style={{ width: "250px", textAlign: "center" }}
+          className="Navbar__select"
         >
           <MenuItem value="hex">
             <em>HEX - #ffffff</em>

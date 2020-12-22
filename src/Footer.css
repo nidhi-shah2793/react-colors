@@ -2,13 +2,29 @@
   background-color: white;
   height: 5vh;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   font-weight: bold;
   font-size: 1.3rem;
 }
 
+.Footer__info {
+  font-weight: 300;
+  margin-left: 1rem;
+}
+
 .Footer__emoji {
   font-size: 1.2rem;
   margin: 0 1rem;
+}
+
+/* until xs sizes */
+@media (max-width: 575.98px) {
+  .Footer {
+    justify-content: flex-end;
+    font-size: 1rem;
+  }
+  .Footer__info {
+    display: none;
+  }
 }

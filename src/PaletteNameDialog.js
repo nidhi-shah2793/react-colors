@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
+import "./PaletteNameDialog.css";
 
 function PaletteNameDialog({
   savePalette,
@@ -61,6 +62,7 @@ function PaletteNameDialog({
             onSelect={addEmoji}
             title="Pick your emoji…"
             emoji="point_up"
+            className="picker"
           />
         </DialogContent>
         <DialogActions>
@@ -107,7 +109,12 @@ function PaletteNameDialog({
             <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="paletteBtn"
+            >
               Pick an Emoji next
             </Button>
           </DialogActions>

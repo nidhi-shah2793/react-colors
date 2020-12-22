@@ -1,0 +1,12 @@
+/* until xs sizes */
+@media (max-width: 575.98px) {
+  .paletteBtn {
+    font-size: 0.7rem !important;
+  }
+  #form-dialog-title {
+    font-size: 5px !important;
+  }
+  .emoji-mart {
+    width: 100% !important;
+  }
+}

@@ -10,17 +10,21 @@ const useStyles = makeStyles((theme) => ({
   },
   picker: {
     width: "100% !important",
-    marginTop: "2rem",
+    marginTop: "1rem",
   },
   addColorBtn: {
     width: "100%",
-    padding: "1rem",
-    marginTop: "1rem",
+    padding: "0.5rem",
     fontSize: "2rem",
+    marginTop: "1rem",
+    "@media (max-width: 575.98px)": {
+      padding: "0.2rem",
+      fontSize: "1.5rem",
+    },
   },
   colorNameInput: {
     width: "100%",
-    height: "70px",
+    height: "60px",
   },
 }));
 

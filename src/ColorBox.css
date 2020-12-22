@@ -155,9 +155,18 @@
     width: 100%;
     height: 10%;
   }
+  .ColorBox__overlayMessage h1 {
+    font-size: 4rem;
+  }
+  .ColorBox__overlayMessage p {
+    font-size: 2rem;
+  }
+  .ColorBox__more {
+    height: 100%;
+  }
 }
 
-/* from sm to md */
+/* from xs to md */
 @media (min-width: 575.98px) and (max-width: 991.98px) {
   .ColorBox {
     width: 50%;
@@ -177,6 +186,6 @@
   }
   .SingleColorPalette .ColorBox {
     width: 25%;
-    height: 33%;
+    height: 33.33%;
   }
 }

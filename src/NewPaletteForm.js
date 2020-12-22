@@ -18,6 +18,7 @@ const maxColors = 20;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    height: "100vh",
     "& > *": {
       // margin: theme.spacing(1),
     },
@@ -25,12 +26,14 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    height: "8vh",
+    height: "100vh",
   },
   drawerPaper: {
     width: drawerWidth,
     display: "flex",
     alignItems: "center",
+    height: "100vh",
+    overflow: "hidden",
   },
   drawerHeader: {
     display: "flex",
@@ -62,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerContent: {
     width: "90%",
-    height: "100%",
+    height: "95vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -77,7 +80,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   button: {
-    width: "50%",
+    width: "49%",
+    "@media (max-width: 575.98px)": {
+      padding: "5px",
+    },
+  },
+  drawerTitle: {
+    fontSize: "1.7rem",
   },
 }));
 
@@ -149,7 +158,7 @@ function NewPaletteForm({ savePalette, palettes }) {
         </div>
         <Divider />
         <div className={classes.drawerContent}>
-          <Typography gutterBottom variant="h4">
+          <Typography gutterBottom variant="h4" className={classes.drawerTitle}>
             Design Your Palette
           </Typography>
           <div className={classes.buttons}>

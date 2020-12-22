@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    "@media (max-width: 575.98px)": {
+      marginRight: "0",
+    },
   },
   hide: {
     display: "none",
@@ -46,9 +49,26 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       textDecoration: "0",
     },
+    "@media (max-width: 575.98px)": {
+      marginRight: "5px",
+    },
   },
   btn: {
     margin: "0 0.5rem",
+    "@media (max-width: 991.98px)": {
+      margin: "0.2rem",
+      padding: "0.3rem",
+    },
+    "@media (max-width: 575.98px)": {
+      fontSize: "8px",
+      padding: "0.1rem",
+      margin: "0",
+    },
+  },
+  navTitle: {
+    "@media (max-width: 991.98px)": {
+      fontSize: "1rem",
+    },
   },
 }));
 
@@ -76,7 +96,6 @@ function NewPaletteFormNav({
     setFormStage("emoji");
   };
 
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -97,7 +116,7 @@ function NewPaletteFormNav({
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap className={classes.navTitle}>
             Create a Palette
           </Typography>
         </Toolbar>
