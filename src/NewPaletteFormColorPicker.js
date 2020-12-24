@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { ChromePicker } from "react-color";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
 function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
   const classes = useStyles();
-  const theme = useTheme();
   const [background, setBackground] = useState("#377ED1");
   const [colorName, setColorName] = useState("");
 
@@ -68,6 +68,7 @@ function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
       />
       <ValidatorForm
         onSubmit={handleSubmit}
+        instantValidate={false}
         onError={(errors) => console.log(errors)}
       >
         <TextValidator
@@ -77,11 +78,11 @@ function NewPaletteFormColorPicker({ colors, addNewColor, maxColors }) {
           onChange={handleColorNameChange}
           value={colorName}
           margin="normal"
-          validators={["required", "isColorNameUnique", "isColorUnique"]}
+          validators={["isColorUnique", "required", "isColorNameUnique"]}
           errorMessages={[
-            "Entering a badass color name is necessary!",
-            "Color name already used!",
             "Color already used!",
+            "Enter a color name!",
+            "Color name already used!",
           ]}
         />
         <Button

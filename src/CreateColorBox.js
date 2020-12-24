@@ -1,8 +1,11 @@
 import React from "react";
-import "./CreateColorBox.css";
+
 import DeleteIcon from "@material-ui/icons/Delete";
 import { SortableElement } from "react-sortable-hoc";
 import chroma from "chroma-js";
+
+import "./styles/CreateColorBox.css";
+
 
 const CreateColorBox = SortableElement(({ name, color, deleteColor }) => {
   const isTooDark = chroma(color).luminance() <= 0.5;

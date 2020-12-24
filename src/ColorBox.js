@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import "./ColorBox.css";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Link } from "react-router-dom";
+
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import chroma from "chroma-js";
 
+import "./styles/ColorBox.css";
+
 function ColorBox({ name, color, paletteId, colorId, showLink }) {
+  //state
   const [copied, setCopied] = useState(false);
 
+  //functions
   const isTooDark = chroma(color).luminance() <= 0.5;
   let adjustedColor = isTooDark ? "white" : "black";
 

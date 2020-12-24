@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
 import Slider from "rc-slider";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -7,8 +8,9 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
+
 import "rc-slider/assets/index.css";
-import "./Navbar.css";
+import "./styles/Navbar.css";
 
 function Navbar({ changeLevel, level, handleFormatChange, showSlider }) {
   const [colorFormat, setColorFormat] = useState("hex");

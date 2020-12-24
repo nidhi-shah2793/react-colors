@@ -1,17 +1,20 @@
 import React, { useState } from "react";
+
+import DraggableColorList from "./DraggableColorList";
+import NewPaletteFormNav from "./NewPaletteFormNav";
+import NewPaletteFormColorPicker from "./NewPaletteFormColorPicker";
+import { DRAWER_WIDTH as drawerWidth } from "./constants";
+import { seedColors } from "./seedColors";
+
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Button from "@material-ui/core/Button";
-import DraggableColorList from "./DraggableColorList";
 import arrayMove from "array-move";
-import NewPaletteFormNav from "./NewPaletteFormNav";
-import NewPaletteFormColorPicker from "./NewPaletteFormColorPicker";
-import { DRAWER_WIDTH as drawerWidth } from "./constants";
 
 const maxColors = 20;
 
@@ -19,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     height: "100vh",
-    "& > *": {
-      // margin: theme.spacing(1),
-    },
   },
   drawer: {
     width: drawerWidth,
@@ -39,13 +39,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     width: "100%",
-    // padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
     minHeight: "8vh !important",
   },
-  // theme.spacing(3)
   content: {
     flexGrow: 1,
     height: "92vh !important",
@@ -81,9 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     width: "49%",
-    "@media (max-width: 575.98px)": {
-      padding: "5px",
-    },
+    padding: "5px",
   },
   drawerTitle: {
     fontSize: "1.7rem",
@@ -92,9 +88,8 @@ const useStyles = makeStyles((theme) => ({
 
 function NewPaletteForm({ savePalette, palettes }) {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = useState(true);
-  const [colors, setColors] = useState(palettes[0].colors);
+  const [colors, setColors] = useState(seedColors[0].colors);
 
   const clearPalette = () => {
     setColors([]);
@@ -105,15 +100,30 @@ function NewPaletteForm({ savePalette, palettes }) {
   };
 
   const addRandomColor = () => {
-    const allColors = palettes.map((palette) => palette.colors).flat();
-    let randomColorIndex = Math.floor(Math.random() * allColors.length);
-    let randomColor = allColors[randomColorIndex];
-    let condition1 = colors.every(({ color }) => color !== randomColor.color);
-    let condition2 = colors.every(
-      ({ name }) => name.toLowerCase() !== randomColor.name.toLowerCase()
-    );
-    if (condition1 && condition2 && colors.length < maxColors)
-      setColors([...colors, randomColor]);
+    try {
+      const allColors = seedColors.map((palette) => palette.colors).flat();
+
+      let randomColorIndex;
+      let randomColor;
+      let isColorDuplicate = true;
+      let isNameDuplicate = true;
+
+      while (isColorDuplicate || isNameDuplicate) {
+        randomColorIndex = Math.floor(Math.random() * allColors.length);
+        randomColor = allColors[randomColorIndex];
+
+        isColorDuplicate = colors.some(
+          (color) => color.color === randomColor.color
+        );
+        isNameDuplicate = colors.some(
+          (color) => color.name.toLowerCase() === randomColor.name.toLowerCase()
+        );
+      }
+
+      if (colors.length < maxColors) setColors([...colors, randomColor]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDrawerClose = () => {

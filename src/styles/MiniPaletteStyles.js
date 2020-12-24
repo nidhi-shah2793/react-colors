@@ -1,9 +1,3 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-
-import { withStyles } from "@material-ui/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-
 const styles = {
   root: {
     backgroundColor: "white",
@@ -83,56 +77,4 @@ const styles = {
   },
 };
 
-const MiniPalette = React.memo(
-  ({
-    colors,
-    emoji,
-    id,
-    paletteName,
-    classes,
-    handleClickOpen,
-    storeDeletePalette,
-  }) => {
-    const history = useHistory();
-
-    const goToPalette = () => {
-      history.push(`/palettes/${id}`);
-    };
-
-    const handleDeleteClick = (event) => {
-      event.stopPropagation();
-      handleClickOpen();
-      storeDeletePalette(paletteName);
-    };
-
-    const miniColorBoxes = colors.map((color) => (
-      <div
-        key={color.name}
-        className={classes.miniColor}
-        style={{ background: color.color }}
-      ></div>
-    ));
-
-    return (
-      <div className={classes.root} onClick={goToPalette}>
-        <DeleteIcon
-          className={classes.deleteIcon}
-          onClick={handleDeleteClick}
-        />
-        <div className={classes.colors}>{miniColorBoxes}</div>
-        <h5 className={classes.title}>
-          {paletteName}
-          <span className={classes.emoji}>{emoji}</span>
-        </h5>
-      </div>
-    );
-  },
-  (prevProps, nextProps) => {
-    if (prevProps.handleClickOpen !== nextProps.handleClickOpen) {
-      return true;
-    }
-    return false;
-  }
-);
-
-export default withStyles(styles)(MiniPalette);
+export {styles}

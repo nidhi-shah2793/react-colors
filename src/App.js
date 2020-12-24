@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+
 import PaletteGen from "./PaletteGen";
 import PaletteList from "./PaletteList";
 import SinglePaletteGen from "./SinglePaletteGen";
 import NewPaletteForm from "./NewPaletteForm";
+
 import { seedColors } from "./seedColors";
+import "./styles/App.css";
 
 function App() {
   const history = useHistory();
@@ -20,11 +22,15 @@ function App() {
     history.push("/");
   };
 
-  const deletePalette = (paletteName) => {
+  function deletePalette(paletteName) {
     const filteredPalettes = palettes.filter(
       (palette) => palette.paletteName !== paletteName
     );
     setPalettes(filteredPalettes);
+  }
+
+  const restorePalettes = () => {
+    setPalettes(seedColors);
   };
 
   useEffect(() => {
@@ -44,7 +50,7 @@ function App() {
           <PaletteGen palettes={palettes} />
         </Route>
         <Route exact path="/">
-          <PaletteList palettes={palettes} deletePalette={deletePalette} />
+          <PaletteList palettes={palettes} deletePalette={deletePalette} restorePalettes={restorePalettes} />
         </Route>
         <Redirect to="/" />
       </Switch>

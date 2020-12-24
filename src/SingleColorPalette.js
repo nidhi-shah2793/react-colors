@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import ColorBox from "./ColorBox";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
 
 function SingleColorPalette({ palette, colorId }) {
   const [colorFormat, setColorFormat] = useState("hex");
